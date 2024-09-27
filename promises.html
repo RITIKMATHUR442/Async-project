@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise Example with Countdown</title>
+    <style>
+        /* General Styles */
+                /* General Styles */
+                body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://images.unsplash.com/photo-1516744472020-b5d3f481f12a?fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+        }
+
+        /* Container Styles */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Heading Styles */
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        /* Button Styles */
+        .animated-button {
+            background: linear-gradient(45deg, #56ccf2, #2f80ed);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Button Hover Effect */
+        .animated-button:hover {
+            background: linear-gradient(45deg, #2f80ed, #56ccf2);
+            transform: translateY(-2px);
+        }
+
+        /* Countdown Timer Styles */
+        .countdown {
+            font-size: 2em;
+            margin: 20px 0;
+            color: #ffd700;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        /* Output Box Styles */
+        .output-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            animation: slideIn 0.5s ease-in;
+            font-size: 1.1em;
+            white-space: pre-line;
+            text-align: left;
+        }
+
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            font-size: 1.5em;
+            color: #f39c12;
+            animation: blink 1s step-start 0s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .animated-button {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+
+            .countdown {
+                font-size: 1.5em;
+            }
+
+            .output-box {
+                padding: 15px;
+                font-size: 1em;
+            }
+
+            .loading {
+                font-size: 1.2em;
+            }
+        }
+
+
+
+        footer {
+    text-align: center;
+    margin-top: 0px;
+    padding: 10px;
+    background: blur 20px;
+    color: #5355b7;
+    border-radius: 8px;
+    animation: fadeInUp 1s ease-in-out;
+    /* width: 100px; */
+
+}
+
+.social-links{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.social-links{
+    display: inline-block;
+    transition: transform 0.3;
+}
+
+.social-links:hover{
+    transform: scale(1.1);
+}
+
+
+.social-icon{
+    width: 40px;
+    height: auto;
+    transition: transform 0.3s;
+}
+
+.social-icon:hover{
+    transform: rotate(360deg);
+}
+
+@media (max-width: 768){
+    .social-icon{
+        width: 30px;
+    }
+}
+
+@media (max-width: 480){
+    footer{
+        padding: 15px;
+    }
+
+    .social-links{
+        flex-direction: column;
+    }
+    .social-links{
+        margin: 5px 0;
+    }
+
+
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Promises</h1>
+        <button id="promiseButton" class="animated-button">Start Countdown & Fetch Data</button>
+        <div id="countdown" class="countdown"></div>
+        <div id="promiseOutput" class="output-box"></div>
+    </div>
+
+    
+    <footer>
+        <p>© 2024 Ritik Mathur. All Rights Reserved.</p>
+        <div class="social-links">
+            <a href="https://github.com/RITIKMATHUR442/callbackhell-project" target="_blank" class="social-link">
+                <img src="Github Logo.svg" alt="GitHub" class="social-icon">
+            </a>
+            <a href="https://www.instagram.com/mr_mathur.902?igsh=MTI0OXhsYnBiNDU2eA==" target="_blank" class="social-link">
+                <img src="Instagram_icon.png" alt="Instagram" class="social-icon">
+            </a>
+            <a href="https://www.facebook.com/ritik.mathur.902/" target="_blank" class="social-link">
+                <img src="Facebook logo.svg" alt="Facebook" class="social-icon">
+            </a>
+        </div>
+    </footer>
+
+
+    <script>
+     document.getElementById('promiseButton').addEventListener('click', () => {
+    fetchDataWithErrorHandling(); // Start fetching data immediately
+});
+
+function fetchDataWithErrorHandling() {
+    const promiseOutputElement = document.getElementById('promiseOutput');
+    const countdownElement = document.getElementById('countdown');
+
+    countdownElement.innerHTML = "Loading..."; // Show loading message immediately
+
+    fetch('https://dummyjson.com/posts') 
+    // fetch('https://dummyjson.com/RESOURCE/?limit=10&skip=5&select=key1&select=key2&select=key3') // use this URL to test  APIs
+
+        
+    .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            promiseOutputElement.innerHTML = formatFetchedData(data); // Display data instantly
+            countdownElement.innerHTML = "Data fetched successfully!"; // Indicate success
+        })
+        .catch(error => {
+            // Start countdown timer for 5 seconds before showing the error message
+            countdownElement.innerHTML = "Fetching failed. Checking for errors..."; // Indicate an error is being checked
+            let secondsLeft = 5;
+
+            const countdownInterval = setInterval(() => {
+                secondsLeft--;
+                countdownElement.innerHTML = `Error occurred. Retry in ${secondsLeft} seconds...`;
+
+                if (secondsLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    promiseOutputElement.innerHTML = `Error: ${error.message}`; // Show the error message
+                }
+            }, 1000);
+        });
+}
+
+// Function to format fetched data in a readable manner
+function formatFetchedData(data) {
+    return data.posts.map(post => `
+        <div>
+            <strong>ID:</strong> ${post.id} <br>
+            <strong>Title:</strong> ${post.title} <br>
+            <strong>Body:</strong> ${post.body} <br>
+            <strong>Tags:</strong> ${post.tags.join(', ')} <br><br>
+        </div>
+    `).join('');
+}
+
+
+    </script>
+    
+</body>
+</html>

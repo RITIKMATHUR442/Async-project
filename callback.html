@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Callback & API Fetch with Countdown</title>
+    <style>
+        /* Background and general body styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, rgba(63, 94, 251, 0.8), rgba(252, 70, 107, 0.8)), url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            color: #fff;
+        }
+
+        /* Button styling */
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: linear-gradient(135deg, #ff8a00, #da1b60);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%) scale(0);
+            border-radius: 50%;
+            transition: all 0.6s ease-in-out;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #da1b60, #ff8a00);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+        }
+
+        button:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Countdown styling */
+        #countdown {
+            font-size: 28px;
+            color: #ffeb3b;
+            margin-bottom: 20px;
+            animation: pulse 1s infinite;
+            font-weight: bold;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Styling for the fetched data container */
+        .data-container {
+            width: 90%;
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            margin-top: 20px;
+            color: #333;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #da1b60;
+        }
+        /* Individual post styling */
+        .post {
+            margin-bottom: 20px;
+            padding: 25px;
+            background-color: #fafafa;
+            border-left: 6px solid #ff5722;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .post-id {
+            font-weight: bold;
+            color: #ff5722;
+        }
+
+        .post-title {
+            font-size: 22px;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #ff5722;
+        }
+
+        .post-body {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .post:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .data-container {
+                width: 95%;
+                padding: 15px;
+            }
+
+            .post-title {
+                font-size: 18px;
+            }
+
+            .post-body {
+                font-size: 14px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+
+
+        /* Animations */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+
+
+        footer {
+    text-align: center;
+    margin-top: 0px;
+    padding: 10px;
+    background: blur 20px;
+    color: #fff;
+    border-radius: 8px;
+    animation: fadeInUp 1s ease-in-out;
+    /* width: 100px; */
+
+}
+
+.social-links{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.social-links{
+    display: inline-block;
+    transition: transform 0.3;
+}
+
+.social-links:hover{
+    transform: scale(1.1);
+}
+
+
+.social-icon{
+    width: 40px;
+    height: auto;
+    transition: transform 0.3s;
+}
+
+.social-icon:hover{
+    transform: rotate(360deg);
+}
+
+@media (max-width: 768){
+    .social-icon{
+        width: 30px;
+    }
+}
+
+@media (max-width: 480){
+    footer{
+        padding: 15px;
+    }
+
+    .social-links{
+        flex-direction: column;
+    }
+    .social-links{
+        margin: 5px 0;
+    }
+
+
+}
+
+
+    </style>
+</head>
+<body>
+
+        <h1>Callback</h1>
+    <button id = "fetchButton"> Fetch API Data</button>
+    <div id="countdown"></div>
+    <div id="result" class="data-container"></div>
+
+
+    <footer>
+        <p>© 2024 Ritik Mathur. All Rights Reserved.</p>
+        <div class="social-links">
+            <a href="https://github.com/RITIKMATHUR442/callbackhell-project" target="_blank" class="social-link">
+                <img src="Github Logo.svg" alt="GitHub" class="social-icon">
+            </a>
+            <a href="https://www.instagram.com/mr_mathur.902?igsh=MTI0OXhsYnBiNDU2eA==" target="_blank" class="social-link">
+                <img src="Instagram_icon.png" alt="Instagram" class="social-icon">
+            </a>
+            <a href="https://www.facebook.com/ritik.mathur.902/" target="_blank" class="social-link">
+                <img src="Facebook logo.svg" alt="Facebook" class="social-icon">
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        function fetchDataWithCallback(callback){
+
+            let countdownElement = document.getElementById('countdown');
+            let countdown = 5;
+
+
+            const countdownInterval = setInterval(()=>{
+                countdownElement.innerHTML = `Fetching data in ${countdown} seconds...`;
+                countdown--;
+
+                if (countdown<0){
+                    clearInterval(countdownInterval)
+                }
+
+            },1000);
+
+            setTimeout(() => {
+                fetch('https://dummyjson.com/posts')
+                    .then(response => response.json())
+                    .then(data => {
+                        callback(data.posts);
+                        countdownElement.innerText = ''; // Clear countdown
+                    })
+                    .catch(error => console.error("Error fetching Data", error));
+                    
+            },5000);
+        }
+
+
+        function displayData(posts){
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
+
+            posts.forEach(post => {
+                const postElement = document.createElement('div')
+                postElement.classList.add('post');
+
+                postElement.innerHTML = `
+                <div class = "post-id"> Post ID: ${post.id}</div>
+                <div class = "post-title"> Title: ${post.title}</div>
+                <div class = "post-body"> Body: ${post.body}</div>
+                `;
+
+                resultDiv.appendChild(postElement);
+            })
+
+        }
+
+        document.getElementById('fetchButton').addEventListener('click', function(){
+            this.disabled = true;
+            this.innerText = "Fetching Data...."
+
+            fetchDataWithCallback(displayData);
+        })
+
+
+</script>
+    
+</body>
+</html>
+

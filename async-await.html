@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Async/Await </title>
+
+    <style>
+        /* General styles */
+/* General styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background: url('https://www.pixelstalk.net/wp-content/uploads/2016/06/Wallpaper-HD-for-Website-Background-Free-download.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+    overflow: hidden;
+}
+
+/* Container styling */
+.container {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.8); /* Transparent black background */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    max-width: 600px;
+    width: 100%;
+    animation: fadeIn 1.5s ease-out;
+}
+
+/* Title styling */
+.title {
+    color: #ffffff;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+    animation: bounceIn 1s ease;
+}
+
+/* Countdown styling */
+.countdown-timer {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #e74c3c;
+    font-weight: bold;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+    animation: flash 1s infinite alternate;
+}
+
+/* Async output */
+.output-box {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 20px;
+    border-radius: 10px;
+    height: 250px;
+    overflow-y: scroll;
+    font-size: 1.1em;
+    color: #ffffff;
+    text-align: left;
+    margin-top: 20px;
+    animation: fadeInUp 1s ease-in-out;
+    backdrop-filter: blur(5px);
+}
+
+/* Button styles */
+.animated-button {
+    padding: 12px 25px;
+    font-size: 1.2em;
+    color: #ffffff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+    transition: all 0.3s ease;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.animated-button:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6);
+}
+
+/* Post Data Styles */
+.post {
+    background-color: rgba(236, 240, 241, 0.8);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.post-id, .post-title, .post-body, .post-tags, .post-reactions, .post-views, .post-userId {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background-color: #bdc3c7;
+    margin: 10px 0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes flash {
+    0% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 73%;
+        padding: 17px;
+    }
+
+    .title {
+        font-size: 2em;
+    }
+
+    .output-box {
+        height: 200px;
+    }
+
+    .animated-button {
+        padding: 10px 20px;
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+
+    .title {
+        font-size: 1.5em;
+    }
+
+    .output-box {
+        height: 150px;
+    }
+
+    .animated-button {
+        padding: 8px 15px;
+        font-size: 1em;
+    }
+}
+
+footer {
+    position: fixed; 
+    bottom: 0; 
+    text-align: right; 
+    padding: 10px;
+    background: transparent; 
+    color: #0c0b0b;
+    border-radius: 8px 0 0 0; 
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-end; 
+    z-index: 999; 
+}
+
+/* Social Links Styling */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.social-icon {
+    width: 30px;
+    height: auto;
+    transition: transform 0.3s;
+}
+
+.social-icon:hover {
+    transform: rotate(360deg);
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .social-icon {
+        width: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    footer {
+        padding: 8px;
+    }
+
+    .social-links {
+        flex-direction: row; 
+    }
+}
+
+
+
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">Async/Await</h1>
+        <button id="asyncButton" class="animated-button">Fetch Data with Async/Await</button>
+        <div id="countdown" class="countdown-timer"></div>
+        <div id="asyncOutput" class="output-box">No data fetched yet...</div>
+    </div>
+
+    <footer>
+        <p>© 2024 Ritik Mathur. All Rights Reserved.</p>
+        <div class="social-links">
+            <a href="https://github.com/RITIKMATHUR442/callbackhell-project" target="_blank" class="social-link">
+                <img src="Github Logo.svg" alt="GitHub" class="social-icon">
+            </a>
+            <a href="https://www.instagram.com/mr_mathur.902?igsh=MTI0OXhsYnBiNDU2eA==" target="_blank" class="social-link">
+                <img src="Instagram_icon.png" alt="Instagram" class="social-icon">
+            </a>
+            <a href="https://www.facebook.com/ritik.mathur.902/" target="_blank" class="social-link">
+                <img src="Facebook logo.svg" alt="Facebook" class="social-icon">
+            </a>
+        </div>
+    </footer>
+
+    <script>
+           document.getElementById('asyncButton').addEventListener('click', async function () {
+            const countdownElement = document.getElementById('countdown');
+            const asyncOutput = document.getElementById('asyncOutput');
+            let countdown = 5;
+
+            // Display loading message during countdown
+            countdownElement.innerHTML = `Fetching data in ${countdown} seconds...`;
+
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                countdownElement.innerHTML = `Fetching data in ${countdown} seconds...`;
+
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+
+            // Fetch the data, but handle errors after 5 seconds
+            try {
+                const data = await fetchDataWithDelay(5000); // Pass 5-second delay for error handling
+                clearInterval(countdownInterval); // Stop the countdown when data is fetched
+                displayPosts(data.posts); // Display fetched posts
+                countdownElement.innerHTML = 'Data fetched successfully!';
+            } catch (error) {
+                // Wait 5 seconds before showing error
+                setTimeout(() => {
+                    clearInterval(countdownInterval); // Stop the countdown if there's an error
+                    countdownElement.innerHTML = 'Error fetching data.';
+                    asyncOutput.innerHTML = error.message;
+                }, 5000); // Wait 5 seconds before displaying error message
+            }
+        });
+
+        // Function to fetch data with a possible error delay
+        async function fetchDataWithDelay(timeout) {
+            return new Promise(async (resolve, reject) => {
+                try {
+
+                     const response = await fetch('https://dummyjson.com/posts');
+                    // const response = await fetch('https://dummyjson.com/RESOURCE/?limit=10&skip=5&select=key1&select=key2&select=key3');    // use this URL to test  APIs
+
+                    // If there's an error in the response, wait 5 seconds before throwing an error
+                    if (!response.ok) {
+                        throw new Error("Network Error: Unable to fetch data.");
+                    }
+
+                    const data = await response.json();
+                    resolve(data); // Resolve data immediately if successful
+                } catch (error) {
+                    // Reject the error without immediately displaying it
+                    reject(error);
+                }
+            });
+        }
+
+        // Display Posts in Readable Format
+        function displayPosts(posts) {
+            const output = document.getElementById('asyncOutput');
+            output.innerHTML = ""; // Clear previous content
+
+            posts.forEach(post => {
+                output.innerHTML += `
+                    <div class="post">
+                        <div class="post-id"><strong>ID:</strong> ${post.id}</div>
+                        <div class="post-title"><strong>Title:</strong> ${post.title}</div>
+                        <div class="post-body"><strong>Body:</strong> ${post.body}</div>
+                        <div class="post-tags"><strong>Tags:</strong> ${post.tags.join(', ')}</div>
+                        <div class="post-reactions"><strong>Reactions:</strong> ${post.reactions}</div>
+                        <div class="post-views"><strong>Views:</strong> ${post.views}</div>
+                        <div class="post-userId"><strong>User ID:</strong> ${post.userId}</div>
+                        <hr>
+                    </div>
+                `;
+            });
+        }
+   
+    </script>
+</body>
+
+</html>
+
